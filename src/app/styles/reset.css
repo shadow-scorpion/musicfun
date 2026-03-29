@@ -1,0 +1,28 @@
+/* 1. Сбрасываем отступы у всего и фиксируем box-sizing */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 2. Убираем стандартные маркеры у списков (полезно для меню) */
+ul, ol {
+    list-style: none;
+}
+
+/* 3. Делаем картинки адаптивными (чтобы не вылезали за блоки) */
+img {
+    max-width: 100%;
+    display: block;
+}
+
+/* 4. Наследуем шрифты для полей ввода (по умолчанию они живут своей жизнью) */
+input, button, textarea, select {
+    font: inherit;
+}
+
+/* 5. Убираем подчеркивание у ссылок по умолчанию */
+a {
+    text-decoration: none;
+    color: inherit;
+}

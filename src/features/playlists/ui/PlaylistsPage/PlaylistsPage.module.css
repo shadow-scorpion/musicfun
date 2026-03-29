@@ -1,0 +1,31 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.title {
+
+}
+
+.playlistsWrap {
+    display: flex;
+    gap: 15px;
+}
+
+.playlistWrap {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    /*max-width: 200px;*/
+    width: 100%;
+    background-color: #dfdfdf;
+    border: 1px solid black;
+    border-radius: 3px;
+    padding: 5px;
+}
+
+.buttonWrap {
+    display: flex;
+    gap: 10px;
+}

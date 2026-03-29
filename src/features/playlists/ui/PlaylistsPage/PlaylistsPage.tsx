@@ -1,18 +1,28 @@
+import { useGetPlaylistsQuery, useRemovePlaylistMutation, useUpdatePlaylistMutation } from '@/features/playlists/api/playlistsApi.ts';
 import { CreatePlaylistForm } from '@/features/playlists/ui/PlaylistsPage/CreatePlaylistForm/CreatePlaylistForm.tsx';
 import s from './PlaylistsPage.module.css';
+import type { UpdatePlaylistArg } from '@/features/playlists';
 
 export const PlaylistsPage = () => {
+  const { data } = useGetPlaylistsQuery();
+  console.log(data);
+
+  const [removePlaylist] = useRemovePlaylistMutation();
+  const [updatePlaylist] = useUpdatePlaylistMutation();
+
   const removePlaylistHandler = (playlistId: string) => {
     if (confirm('Are you sure want to delete playlist?')) {
-      console.log('Playlist delete');
+      removePlaylist(playlistId);
+      // console.log('Playlist delete');
     }
   };
   const updatePlaylistHandler = (playlistId: string) => {
-    const body = {
+    const body: UpdatePlaylistArg = {
       title: 'update title',
       description: 'some new',
       tagIds: [],
     };
+    updatePlaylist({ playlistId, body });
   };
 
   return (

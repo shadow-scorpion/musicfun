@@ -1,6 +1,7 @@
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { useId } from 'react';
 import s from './CreatePlaylistForm.module.css';
+import { useCreatePlaylistMutation } from '@/features/playlists';
 
 type InputsPlaylist = {
   title: string;
@@ -8,12 +9,16 @@ type InputsPlaylist = {
 };
 
 export const CreatePlaylistForm = () => {
+  const [createPlaylist] = useCreatePlaylistMutation();
   const inputTitleId = useId();
   const inputDescrptId = useId();
   const { register, handleSubmit, reset } = useForm<InputsPlaylist>();
 
   const handleCreatePlaylist: SubmitHandler<InputsPlaylist> = (data) => {
     const { title, description } = data;
+    console.log(title);
+    console.log(description);
+    createPlaylist({ title, description });
     // удаление в случае успешно созданого плейлиста
     reset();
   };

@@ -2,6 +2,7 @@ import { type SubmitHandler, useForm } from 'react-hook-form';
 import { useId } from 'react';
 import s from './CreatePlaylistForm.module.css';
 import { useCreatePlaylistMutation } from '@/features/playlists';
+import { Button } from '@/common/components/Button/Button.tsx';
 
 type InputsPlaylist = {
   title: string;
@@ -34,9 +35,9 @@ export const CreatePlaylistForm = () => {
         <input id={inputDescrptId} type={'text'} {...register('description')} />
       </div>
 
-      <button className={s.button} type={'submit'}>
+      <Button className={s.button} type={'submit'}>
         Submit
-      </button>
+      </Button>
     </form>
   );
 };

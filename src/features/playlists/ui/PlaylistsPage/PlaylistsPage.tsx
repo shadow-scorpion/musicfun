@@ -1,28 +1,30 @@
-import { useGetPlaylistsQuery, useRemovePlaylistMutation, useUpdatePlaylistMutation } from '@/features/playlists/api/playlistsApi.ts';
 import { CreatePlaylistForm } from '@/features/playlists/ui/PlaylistsPage/CreatePlaylistForm/CreatePlaylistForm.tsx';
 import s from './PlaylistsPage.module.css';
-import type { UpdatePlaylistArg } from '@/features/playlists';
+import { useState } from 'react';
+import { dataPlaylists } from '@/features/playlists/ui/PlaylistsPage/variableData.ts';
+import { useForm } from 'react-hook-form';
+import { PlaylistItem } from '@/features/playlists/ui/PlaylistsPage/PlaylistItem/PlaylistItem.tsx';
+import { UpdatePlaylistForm } from '@/features/playlists/ui/PlaylistsPage/PlaylistItem/UpdatePlaylistForm/UpdatePlaylistForm.tsx';
+import { type PlaylistData, type UpdatePlaylistArg, useGetPlaylistsQuery, useRemovePlaylistMutation } from '@/features/playlists';
 
 export const PlaylistsPage = () => {
   const { data } = useGetPlaylistsQuery();
-  console.log(data);
 
-  const [removePlaylist] = useRemovePlaylistMutation();
-  const [updatePlaylist] = useUpdatePlaylistMutation();
+  const [dataPl, setDataPl] = useState(dataPlaylists);
+  const [playlistId, setPlaylistId] = useState<string | null>(null);
+  const { register, handleSubmit, reset } = useForm<UpdatePlaylistArg>();
 
-  const removePlaylistHandler = (playlistId: string) => {
-    if (confirm('Are you sure want to delete playlist?')) {
-      removePlaylist(playlistId);
-      // console.log('Playlist delete');
+  const editPlaylistHandler = (playlist: PlaylistData | null) => {
+    if (playlist) {
+      reset({
+        title: playlist.attributes.title,
+        description: playlist.attributes.description,
+        tagIds: playlist.attributes.tags.map((tag) => tag.id),
+      });
+      setPlaylistId(playlist.id);
+    } else {
+      setPlaylistId(null);
     }
-  };
-  const updatePlaylistHandler = (playlistId: string) => {
-    const body: UpdatePlaylistArg = {
-      title: 'update title',
-      description: 'some new',
-      tagIds: [],
-    };
-    updatePlaylist({ playlistId, body });
   };
 
   return (
@@ -30,173 +32,27 @@ export const PlaylistsPage = () => {
       <h1 className={s.title}>Playlists page</h1>
       <CreatePlaylistForm />
       <div className={s.playlistsWrap}>
-        {dataPlaylts.data.map((playlist) => (
-          <div key={playlist.id} className={s.playlistWrap}>
-            <div>title: {playlist.attributes.title}</div>
-            <div>duration:</div>
-            <div>userName: {playlist.attributes.user.name}</div>
-            <div className={s.buttonWrap}>
-              <button onClick={() => removePlaylistHandler(playlist.id)}>Delete</button>
-              <button onClick={() => updatePlaylistHandler(playlist.id)}>Update</button>
+        {dataPl?.data?.map((playlist) => {
+          const isEditing = playlistId === playlist.id;
+          return (
+            <div key={playlist.id} className={s.playlistWrap}>
+              {isEditing ? (
+                <UpdatePlaylistForm
+                  playlist={playlist}
+                  playlistId={playlistId}
+                  setPlaylistId={setPlaylistId}
+                  register={register}
+                  onClickCancelEdit={editPlaylistHandler}
+                  setDataPl={setDataPl}
+                  handleSubmit={handleSubmit}
+                />
+              ) : (
+                <PlaylistItem playlist={playlist} onClickEdit={editPlaylistHandler} />
+              )}
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
-};
-
-const dataPlaylts = {
-  data: [
-    {
-      id: '1',
-      type: 'playlists',
-      attributes: {
-        title: 'First playlist',
-        addedAt: '2026-03-27T13:13:22.993Z',
-        updatedAt: '2026-03-27T13:13:22.993Z',
-        order: 0,
-        user: {
-          id: 'string',
-          name: 'string',
-        },
-        images: {
-          main: [
-            {
-              type: 'original',
-              width: 0,
-              height: 0,
-              fileSize: 0,
-              url: 'string',
-            },
-          ],
-        },
-        tags: [
-          {
-            id: 'string',
-            name: 'string',
-          },
-        ],
-        likesCount: 0,
-        dislikesCount: 0,
-        currentUserReaction: 0,
-        tracksCount: 0,
-        duration: 0,
-      },
-    },
-    {
-      id: '2',
-      type: 'playlists',
-      attributes: {
-        title: 'Second playlist',
-        addedAt: '2026-03-27T13:13:22.993Z',
-        updatedAt: '2026-03-27T13:13:22.993Z',
-        order: 0,
-        user: {
-          id: 'string',
-          name: 'John',
-        },
-        images: {
-          main: [
-            {
-              type: 'original',
-              width: 0,
-              height: 0,
-              fileSize: 0,
-              url: 'string',
-            },
-          ],
-        },
-        tags: [
-          {
-            id: 'string',
-            name: 'string',
-          },
-        ],
-        likesCount: 0,
-        dislikesCount: 0,
-        currentUserReaction: 0,
-        tracksCount: 0,
-        duration: 0,
-      },
-    },
-    {
-      id: '3',
-      type: 'playlists',
-      attributes: {
-        title: 'Third playlist',
-        addedAt: '2026-03-27T13:13:22.993Z',
-        updatedAt: '2026-03-27T13:13:22.993Z',
-        order: 0,
-        user: {
-          id: 'string',
-          name: 'Steve',
-        },
-        images: {
-          main: [
-            {
-              type: 'original',
-              width: 0,
-              height: 0,
-              fileSize: 0,
-              url: 'string',
-            },
-          ],
-        },
-        tags: [
-          {
-            id: 'string',
-            name: 'string',
-          },
-        ],
-        likesCount: 0,
-        dislikesCount: 0,
-        currentUserReaction: 0,
-        tracksCount: 0,
-        duration: 0,
-      },
-    },
-    {
-      id: '4',
-      type: 'playlists',
-      attributes: {
-        title: 'Fourth playlist',
-        addedAt: '2026-03-27T13:13:22.993Z',
-        updatedAt: '2026-03-27T13:13:22.993Z',
-        order: 0,
-        user: {
-          id: 'string',
-          name: 'Maximus',
-        },
-        images: {
-          main: [
-            {
-              type: 'original',
-              width: 0,
-              height: 0,
-              fileSize: 0,
-              url: 'string',
-            },
-          ],
-        },
-        tags: [
-          {
-            id: 'string',
-            name: 'string',
-          },
-        ],
-        likesCount: 0,
-        dislikesCount: 0,
-        currentUserReaction: 0,
-        tracksCount: 0,
-        duration: 0,
-      },
-    },
-  ],
-  meta: {
-    totalCount: 0,
-    page: 0,
-    pageSize: 0,
-    pagesCount: 0,
-  },
 };

@@ -1,7 +1,6 @@
 import { CreatePlaylistForm } from '@/features/playlists/ui/PlaylistsPage/CreatePlaylistForm/CreatePlaylistForm.tsx';
 import s from './PlaylistsPage.module.css';
 import { useState } from 'react';
-import { dataPlaylists } from '@/features/playlists/ui/PlaylistsPage/variableData.ts';
 import { useForm } from 'react-hook-form';
 import { PlaylistItem } from '@/features/playlists/ui/PlaylistsPage/PlaylistItem/PlaylistItem.tsx';
 import { UpdatePlaylistForm } from '@/features/playlists/ui/PlaylistsPage/PlaylistItem/UpdatePlaylistForm/UpdatePlaylistForm.tsx';
@@ -10,7 +9,6 @@ import { type PlaylistData, type UpdatePlaylistArg, useGetPlaylistsQuery, useRem
 export const PlaylistsPage = () => {
   const { data } = useGetPlaylistsQuery();
 
-  const [dataPl, setDataPl] = useState(dataPlaylists);
   const [playlistId, setPlaylistId] = useState<string | null>(null);
   const { register, handleSubmit, reset } = useForm<UpdatePlaylistArg>();
 
@@ -32,7 +30,7 @@ export const PlaylistsPage = () => {
       <h1 className={s.title}>Playlists page</h1>
       <CreatePlaylistForm />
       <div className={s.playlistsWrap}>
-        {dataPl?.data?.map((playlist) => {
+        {data?.data?.map((playlist) => {
           const isEditing = playlistId === playlist.id;
           return (
             <div key={playlist.id} className={s.playlistWrap}>
@@ -43,7 +41,6 @@ export const PlaylistsPage = () => {
                   setPlaylistId={setPlaylistId}
                   register={register}
                   onClickCancelEdit={editPlaylistHandler}
-                  setDataPl={setDataPl}
                   handleSubmit={handleSubmit}
                 />
               ) : (

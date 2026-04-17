@@ -29,11 +29,11 @@ export const PlaylistsPage = () => {
     <div className={s.container}>
       <h1 className={s.title}>Playlists page</h1>
       <CreatePlaylistForm />
-      <div className={s.playlistsWrap}>
+      <div className={s.playlistsList}>
         {data?.data?.map((playlist) => {
           const isEditing = playlistId === playlist.id;
           return (
-            <div key={playlist.id} className={s.playlistWrap}>
+            <div key={playlist.id} className={s.playlistItem}>
               {isEditing ? (
                 <UpdatePlaylistForm
                   playlist={playlist}

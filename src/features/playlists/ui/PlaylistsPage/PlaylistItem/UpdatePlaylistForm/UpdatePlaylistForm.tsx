@@ -1,28 +1,27 @@
 import { type SubmitHandler, type UseFormHandleSubmit, type UseFormRegister } from 'react-hook-form';
-import { type PlaylistData, type UpdatePlaylistArg, useUpdatePlaylistMutation } from '@/features/playlists';
+import { type PlaylistData, type UpdatePlaylistInput, useUpdatePlaylistMutation } from '@/features/playlists';
 import { useId } from 'react';
 import s from './UpdatePlaylistForm.module.css';
 import { Button } from '@/common/components/Button/Button.tsx';
 
 type Props = {
-  playlist: PlaylistData;
   playlistId: string | null;
   setPlaylistId: (playlistId: string | null) => void;
-  register: UseFormRegister<UpdatePlaylistArg>;
-  handleSubmit: UseFormHandleSubmit<UpdatePlaylistArg>;
+  register: UseFormRegister<UpdatePlaylistInput>;
+  handleSubmit: UseFormHandleSubmit<UpdatePlaylistInput>;
   onClickCancelEdit: (playlist: null) => void;
 };
 
-export const UpdatePlaylistForm = ({ playlist, playlistId, setPlaylistId, handleSubmit, register, onClickCancelEdit }: Props) => {
+export const UpdatePlaylistForm = ({ playlistId, setPlaylistId, handleSubmit, register, onClickCancelEdit }: Props) => {
   const [updatePlaylist] = useUpdatePlaylistMutation();
   const inputTitleId = useId();
   const inputDescrptId = useId();
 
-  const onSubmit: SubmitHandler<UpdatePlaylistArg> = (data) => {
+  const onSubmit: SubmitHandler<UpdatePlaylistInput> = (data) => {
     if (!playlistId) return;
-
-    setPlaylistId(null);
-    // updatePlaylist({ playlistId, body });
+    updatePlaylist({ playlistId, data })
+      .unwrap()
+      .then(() => setPlaylistId(null));
   };
 
   return (

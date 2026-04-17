@@ -4,13 +4,13 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { PlaylistItem } from '@/features/playlists/ui/PlaylistsPage/PlaylistItem/PlaylistItem.tsx';
 import { UpdatePlaylistForm } from '@/features/playlists/ui/PlaylistsPage/PlaylistItem/UpdatePlaylistForm/UpdatePlaylistForm.tsx';
-import { type PlaylistData, type UpdatePlaylistArg, useGetPlaylistsQuery, useRemovePlaylistMutation } from '@/features/playlists';
+import { type PlaylistData, type UpdatePlaylistInput, useGetPlaylistsQuery } from '@/features/playlists';
 
 export const PlaylistsPage = () => {
   const { data } = useGetPlaylistsQuery();
 
   const [playlistId, setPlaylistId] = useState<string | null>(null);
-  const { register, handleSubmit, reset } = useForm<UpdatePlaylistArg>();
+  const { register, handleSubmit, reset } = useForm<UpdatePlaylistInput>();
 
   const editPlaylistHandler = (playlist: PlaylistData | null) => {
     if (playlist) {

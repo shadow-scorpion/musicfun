@@ -58,12 +58,14 @@ export type CreatePlaylistArg = {
 export type CreatePlaylistInput = CreatePlaylistArg['data']['attributes'];
 
 export type UpdatePlaylistArg = {
-  title: string;
-  description: string;
-  tagIds: string[];
+  data: {
+    type: string;
+    attributes: {
+      title: string;
+      description: string;
+      tagIds: string[];
+    };
+  };
 };
 
-export type CreatePlaylistInput = {
-  title: string;
-  description: string;
-};
+export type UpdatePlaylistInput = UpdatePlaylistArg['data']['attributes'];

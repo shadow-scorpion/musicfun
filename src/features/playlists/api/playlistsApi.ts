@@ -1,4 +1,10 @@
-import type { CreatePlaylistArg, PlaylistsResponse, UpdatePlaylistArg } from '@/features/playlists/api/playlistsApi.types.ts';
+import type {
+  CreatePlaylistArg,
+  CreatePlaylistInput,
+  PlaylistData,
+  PlaylistsResponse,
+  UpdatePlaylistArg,
+} from '@/features/playlists/api/playlistsApi.types.ts';
 import { baseApi } from '@/app/api/baseApi.ts';
 
 export const playlistsApi = baseApi.injectEndpoints({
@@ -7,8 +13,11 @@ export const playlistsApi = baseApi.injectEndpoints({
       query: () => ({ method: 'get', url: 'playlists' }),
       providesTags: ['Playlists'],
     }),
-    createPlaylist: build.mutation<PlaylistsResponse, CreatePlaylistArg>({
-      query: (body) => ({ method: 'post', url: 'playlists', body }),
+    createPlaylist: build.mutation<{ data: PlaylistData }, CreatePlaylistInput>({
+      query: (data) => {
+        const body = createPlaylistData(data);
+        return { method: 'post', url: 'playlists', body };
+      },
       invalidatesTags: ['Playlists'],
     }),
     removePlaylist: build.mutation<void, string>({
@@ -23,3 +32,12 @@ export const playlistsApi = baseApi.injectEndpoints({
 });
 
 export const { useGetPlaylistsQuery, useCreatePlaylistMutation, useRemovePlaylistMutation, useUpdatePlaylistMutation } = playlistsApi;
+
+const createPlaylistData = (data: { title: string; description: string }): CreatePlaylistArg => {
+  return {
+    data: {
+      type: 'playlists',
+      attributes: data,
+    },
+  };
+};

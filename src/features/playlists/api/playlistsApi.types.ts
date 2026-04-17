@@ -55,6 +55,8 @@ export type CreatePlaylistArg = {
   };
 };
 
+export type CreatePlaylistInput = CreatePlaylistArg['data']['attributes'];
+
 export type UpdatePlaylistArg = {
   title: string;
   description: string;

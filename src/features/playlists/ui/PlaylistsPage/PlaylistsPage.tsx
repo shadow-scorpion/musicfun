@@ -36,7 +36,6 @@ export const PlaylistsPage = () => {
             <div key={playlist.id} className={s.playlistItem}>
               {isEditing ? (
                 <UpdatePlaylistForm
-                  playlist={playlist}
                   playlistId={playlistId}
                   setPlaylistId={setPlaylistId}
                   register={register}

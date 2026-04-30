@@ -8,9 +8,7 @@ import { type PlaylistData, type PlaylistInput, useGetPlaylistsQuery } from '@/f
 
 export const PlaylistsPage = () => {
   const { data } = useGetPlaylistsQuery();
-
   const [playlistId, setPlaylistId] = useState<string | null>(null);
-  const { register, handleSubmit, reset } = useForm<UpdatePlaylistInput>();
 
   const { register, handleSubmit, reset } = useForm<PlaylistInput>();
 

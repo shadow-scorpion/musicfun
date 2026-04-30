@@ -1,5 +1,6 @@
 import type { PlaylistData, PlaylistsResponse, PlaylistInput, PlaylistRequestBody } from '@/features/playlists/api/playlistsApi.types.ts';
 import { baseApi } from '@/app/api/baseApi.ts';
+import type { Images } from '@/common/types';
 
 export const playlistsApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
@@ -25,10 +26,31 @@ export const playlistsApi = baseApi.injectEndpoints({
       },
       invalidatesTags: ['Playlists'],
     }),
+    uploadPlaylistCover: build.mutation<Images, { playlistId: string; file: File }>({
+      query: ({ playlistId, file }) => {
+        const formData = new FormData();
+        formData.append('file', file);
+        // console.log(formData.get('file'));
+        // console.log(formData);
+        return { method: 'post', url: `/playlists/${playlistId}/images/main`, body: formData };
+      },
+      invalidatesTags: ['Playlists'],
+    }),
+    deletePlaylistCover: build.mutation<void, string>({
+      query: (playlistId) => ({ method: 'delete', url: `/playlists/${playlistId}/images/main` }),
+      invalidatesTags: ['Playlists'],
+    }),
   }),
 });
 
-export const { useGetPlaylistsQuery, useCreatePlaylistMutation, useRemovePlaylistMutation, useUpdatePlaylistMutation } = playlistsApi;
+export const {
+  useGetPlaylistsQuery,
+  useCreatePlaylistMutation,
+  useRemovePlaylistMutation,
+  useUpdatePlaylistMutation,
+  useUploadPlaylistCoverMutation,
+  useDeletePlaylistCoverMutation,
+} = playlistsApi;
 
 const mapPlaylistRequestBody = (data: PlaylistInput): PlaylistRequestBody => {
   return {

@@ -1,11 +1,4 @@
-import type {
-  CreatePlaylistArg,
-  CreatePlaylistInput,
-  PlaylistData,
-  PlaylistsResponse,
-  UpdatePlaylistArg,
-  UpdatePlaylistInput,
-} from '@/features/playlists/api/playlistsApi.types.ts';
+import type { PlaylistData, PlaylistsResponse, PlaylistInput, PlaylistRequestBody } from '@/features/playlists/api/playlistsApi.types.ts';
 import { baseApi } from '@/app/api/baseApi.ts';
 
 export const playlistsApi = baseApi.injectEndpoints({
@@ -14,7 +7,7 @@ export const playlistsApi = baseApi.injectEndpoints({
       query: () => ({ method: 'get', url: 'playlists' }),
       providesTags: ['Playlists'],
     }),
-    createPlaylist: build.mutation<{ data: PlaylistData }, CreatePlaylistInput>({
+    createPlaylist: build.mutation<{ data: PlaylistData }, PlaylistInput>({
       query: (data) => {
         const body = mapPlaylistRequestBody(data);
         return { method: 'post', url: 'playlists', body };
@@ -25,7 +18,7 @@ export const playlistsApi = baseApi.injectEndpoints({
       query: (playlistId) => ({ method: 'delete', url: `playlists/${playlistId}` }),
       invalidatesTags: ['Playlists'],
     }),
-    updatePlaylist: build.mutation<void, { playlistId: string; data: UpdatePlaylistInput }>({
+    updatePlaylist: build.mutation<void, { playlistId: string; data: PlaylistInput }>({
       query: ({ playlistId, data }) => {
         const body = mapPlaylistRequestBody(data);
         return { method: 'put', url: `playlists/${playlistId}`, body };
@@ -37,7 +30,7 @@ export const playlistsApi = baseApi.injectEndpoints({
 
 export const { useGetPlaylistsQuery, useCreatePlaylistMutation, useRemovePlaylistMutation, useUpdatePlaylistMutation } = playlistsApi;
 
-const mapPlaylistRequestBody = (data: CreatePlaylistInput | UpdatePlaylistInput): CreatePlaylistArg => {
+const mapPlaylistRequestBody = (data: PlaylistInput): PlaylistRequestBody => {
   return {
     data: {
       type: 'playlists',

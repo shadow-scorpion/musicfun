@@ -1,18 +1,16 @@
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { useId } from 'react';
 import s from './CreatePlaylistForm.module.css';
-import { type CreatePlaylistInput, useCreatePlaylistMutation } from '@/features/playlists';
+import { type PlaylistInput, useCreatePlaylistMutation } from '@/features/playlists';
 import { Button } from '@/common/components/Button/Button.tsx';
-
-type InputsPlaylist = CreatePlaylistInput;
 
 export const CreatePlaylistForm = () => {
   const [createPlaylist] = useCreatePlaylistMutation();
   const inputTitleId = useId();
   const inputDescrptId = useId();
-  const { register, handleSubmit, reset } = useForm<InputsPlaylist>();
+  const { register, handleSubmit, reset } = useForm<PlaylistInput>();
 
-  const handleCreatePlaylist: SubmitHandler<InputsPlaylist> = (data) => {
+  const handleCreatePlaylist: SubmitHandler<PlaylistInput> = (data) => {
     createPlaylist(data)
       .unwrap()
       .then(() => reset());

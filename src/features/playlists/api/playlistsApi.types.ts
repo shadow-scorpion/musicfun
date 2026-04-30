@@ -45,27 +45,27 @@ export type FetchPlaylistsArgs = {
   trackId?: string;
 };
 
-export type CreatePlaylistArg = {
+// export type CreatePlaylistArg = {
+//   data: {
+//     type: string;
+//     attributes: {
+//       title: string;
+//       description: string;
+//     };
+//   };
+// };
+//
+// export type CreatePlaylistInput = CreatePlaylistArg['data']['attributes'];
+
+export type PlaylistRequestBody = {
   data: {
     type: string;
     attributes: {
       title: string;
       description: string;
+      tagIds?: string[];
     };
   };
 };
 
-export type CreatePlaylistInput = CreatePlaylistArg['data']['attributes'];
-
-export type UpdatePlaylistArg = {
-  data: {
-    type: string;
-    attributes: {
-      title: string;
-      description: string;
-      tagIds: string[];
-    };
-  };
-};
-
-export type UpdatePlaylistInput = UpdatePlaylistArg['data']['attributes'];
+export type PlaylistInput = PlaylistRequestBody['data']['attributes'];

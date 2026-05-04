@@ -3,6 +3,7 @@ import s from './PlaylistCover.module.css';
 import type { Images } from '@/common/types';
 import type { ChangeEvent } from 'react';
 import { useDeletePlaylistCoverMutation, useUploadPlaylistCoverMutation } from '@/features/playlists/api/playlistsApi.ts';
+import { toast } from 'react-toastify';
 
 type Props = {
   images: Images;
@@ -21,11 +22,13 @@ export const PlaylistCover = ({ images, playlistId }: Props) => {
     const maxFileSize = 1024 * 1024;
 
     const file = e.target.files?.length && e.target.files?.[0];
-    const isValidType = file && acceptedTypes.includes(file.type);
 
-    if (!isValidType) return;
+    if (!file) return;
+    if (!acceptedTypes.includes(file.type)) {
+      toast.error('Only JPEG, PNG, and GIF files are allowed.');
+    }
     if (file.size > maxFileSize) {
-      alert('File size exceeds the maximum limit of 1MB.');
+      toast.error('File size exceeds the maximum limit of 1MB.');
       return;
     }
     uploadPlaylistCover({ playlistId, file });

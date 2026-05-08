@@ -35,6 +35,7 @@ export const PlaylistsPage = () => {
       <CreatePlaylistForm />
       <input type={'search'} placeholder={'Search playlist'} onChange={(e) => setSearch(e.target.value)} />
       <div className={s.playlistsList}>
+        {!data?.data.length && !isLoading && <h2>No playlists found</h2>}
         {data?.data?.map((playlist) => {
           const isEditing = playlistId === playlist.id;
           return (

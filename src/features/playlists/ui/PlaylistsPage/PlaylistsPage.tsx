@@ -55,6 +55,7 @@ export const PlaylistsPage = () => {
           );
         })}
       </div>
+      <Pagination
     </div>
   );
 };

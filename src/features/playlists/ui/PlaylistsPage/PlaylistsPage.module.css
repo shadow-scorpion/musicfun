@@ -7,21 +7,3 @@
 .title {
 
 }
-
-.playlistsList {
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-}
-
-.playlistItem {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-    max-width: 250px;
-    width: 100%;
-    background-color: #dfdfdf;
-    border: 1px solid black;
-    border-radius: 8px;
-    padding: 16px;
-}

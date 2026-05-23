@@ -36,8 +36,6 @@ export const playlistsApi = baseApi.injectEndpoints({
       query: ({ playlistId, file }) => {
         const formData = new FormData();
         formData.append('file', file);
-        // console.log(formData.get('file'));
-        // console.log(formData);
         return { method: 'post', url: `/playlists/${playlistId}/images/main`, body: formData };
       },
       invalidatesTags: ['Playlists'],

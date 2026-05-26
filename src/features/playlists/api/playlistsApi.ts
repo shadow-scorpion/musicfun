@@ -28,7 +28,36 @@ export const playlistsApi = baseApi.injectEndpoints({
     updatePlaylist: build.mutation<void, { playlistId: string; data: PlaylistInput }>({
       query: ({ playlistId, data }) => {
         const body = mapPlaylistRequestBody(data);
-        return { method: 'put', url: `playlists/${playlistId}`, body };
+        return { method: 'put', url: `playlists/${playlistId + '55'}`, body };
+      },
+      onQueryStarted: async ({ playlistId, data }, { dispatch, queryFulfilled, getState }) => {
+        const patchCollection: any[] = [];
+        const args = playlistsApi.util.selectCachedArgsForQuery(getState(), 'getPlaylists');
+        args.forEach((arg) => {
+          patchCollection.push(
+            dispatch(
+              playlistsApi.util.updateQueryData(
+                'getPlaylists',
+                { search: arg.search, pageNumber: arg.pageNumber, pageSize: arg.pageSize },
+                (draft) => {
+                  const playlist = draft.data.findIndex((p) => p.id === playlistId);
+                  if (playlist !== -1) {
+                    draft.data[playlist].attributes = {
+                      ...draft.data[playlist].attributes,
+                      ...data,
+                    };
+                  }
+                },
+              ),
+            ),
+          );
+        });
+
+        try {
+          await queryFulfilled;
+        } catch (e) {
+          patchCollection.forEach((patch) => patch.undo());
+        }
       },
       invalidatesTags: ['Playlists'],
     }),

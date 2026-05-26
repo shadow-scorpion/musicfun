@@ -12,16 +12,23 @@ type Props = {
   onClickCancelEdit: (playlist: null) => void;
 };
 
-export const UpdatePlaylistForm = ({ playlistId, setPlaylistId, handleSubmit, register, onClickCancelEdit }: Props) => {
+export const UpdatePlaylistForm = ({
+  playlistId,
+  setPlaylistId,
+  handleSubmit,
+  register,
+  onClickCancelEdit,
+}: Props) => {
   const [updatePlaylist] = useUpdatePlaylistMutation();
   const inputTitleId = useId();
   const inputDescrptId = useId();
 
   const onSubmit: SubmitHandler<PlaylistInput> = (data) => {
     if (!playlistId) return;
-    updatePlaylist({ playlistId, data })
+    setPlaylistId(null);
+    updatePlaylist({ playlistId: playlistId, data })
       .unwrap()
-      .then(() => setPlaylistId(null));
+      .catch(() => setPlaylistId(playlistId));
   };
 
   return (

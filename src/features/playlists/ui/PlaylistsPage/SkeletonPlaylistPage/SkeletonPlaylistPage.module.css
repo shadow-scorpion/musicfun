@@ -1,0 +1,57 @@
+.createPlaylistFormWrap {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.input {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.playlistItemsWrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.playlistItem {
+    display: flex;
+    flex-direction: column;
+    max-width: 250px;
+    min-width: 240px;
+    gap: 10px;
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #e6e5e5;
+    border-radius: 6px;;
+}
+
+.coverSection {
+    height: 200px;
+    border-radius: 6px;
+}
+
+.descriptionSection {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.button {
+
+}
+
+.cover {
+    width: 100%;
+    height: 100%;
+    border-radius: 6px;
+}

@@ -3,5 +3,6 @@ export const PATH = {
   PROFILE: '/profile',
   PLAYLISTS: '/playlists',
   TRACKS: '/tracks',
+  OAUTHREDIRECT: '/oauth/callback',
   ERROR: '*',
 } as const;

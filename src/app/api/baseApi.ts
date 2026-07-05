@@ -1,26 +1,9 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { handleErrors } from '@/common/utils';
+import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseQueryWithReauth } from '@/app/api/baseQueryWithReauth.ts';
 
 export const baseApi = createApi({
   reducerPath: 'baseApi',
-  baseQuery: async (args, api, extraOptions) => {
-    const result = await fetchBaseQuery({
-      baseUrl: import.meta.env.VITE_BASE_URL,
-      headers: {
-        'api-key': import.meta.env.VITE_API_KEY,
-      },
-      prepareHeaders: (headers) => {
-        headers.set('Authorization', `Bearer ${import.meta.env.VITE_ACCESS_TOKEN}`);
-        return headers;
-      },
-    })(args, api, extraOptions);
-
-    if (result.error) {
-      handleErrors(result.error);
-    }
-
-    return result;
-  },
+  baseQuery: baseQueryWithReauth,
   endpoints: () => ({}),
-  tagTypes: ['Playlists'],
+  tagTypes: ['Playlists', 'Auth'],
 });

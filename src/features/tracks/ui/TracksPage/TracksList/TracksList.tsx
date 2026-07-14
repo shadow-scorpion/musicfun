@@ -3,7 +3,7 @@ import { LoadingTrigger } from '@/features/tracks/ui/TracksPage/TracksList/Loadi
 import { useFetchTracksInfiniteQuery } from '@/features/tracks/api/tracksApi.ts';
 
 export const TracksList = () => {
-  const { data, isFetching, fetchNextPage, hasNextPage, isFetchingNextPage } = useFetchTracksInfiniteQuery();
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useFetchTracksInfiniteQuery();
 
   const pages = data?.pages.map((page) => page.data).flat() || [];
 
@@ -28,7 +28,6 @@ export const TracksList = () => {
         <LoadingTrigger
           hasNextPage={hasNextPage}
           fetchNextPage={fetchNextPage}
-          isFetching={isFetching}
           isFetchingNextPage={isFetchingNextPage}
         />
       )}

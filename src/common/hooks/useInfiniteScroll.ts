@@ -2,18 +2,18 @@ import { useCallback, useEffect, useRef } from 'react';
 
 type Props = {
   hasNextPage: boolean;
-  isFetching: boolean;
+  isFetchingNextPage: boolean;
   fetchNextPage: () => void;
 };
 
-export const useInfiniteScroll = ({ hasNextPage, isFetching, fetchNextPage }: Props) => {
+export const useInfiniteScroll = ({ hasNextPage, isFetchingNextPage, fetchNextPage }: Props) => {
   const observerRef = useRef<HTMLDivElement>(null);
 
   const loadTracksHandler = useCallback(() => {
-    if (hasNextPage && !isFetching) {
+    if (hasNextPage && !isFetchingNextPage) {
       fetchNextPage();
     }
-  }, [hasNextPage, isFetching, fetchNextPage]);
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(

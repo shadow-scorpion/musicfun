@@ -34,12 +34,7 @@ export const authApi = baseApi.injectEndpoints({
         dispatch(authApi.util.resetApiState());
       },
     }),
-    authRefresh: build.mutation<LoginResponse, { refreshToken: string }>({
-      query: (body) => {
-        return { method: 'post', url: '/auth/refresh', body };
-      },
-    }),
   }),
 });
 
-export const { useGetMeQuery, useLoginMutation, useLogoutMutation, useAuthRefreshMutation } = authApi;
+export const { useGetMeQuery, useLoginMutation, useLogoutMutation } = authApi;

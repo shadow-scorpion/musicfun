@@ -1,4 +1,3 @@
-import { CreatePlaylistForm } from '@/features/playlists/ui/PlaylistsPage/CreatePlaylistForm/CreatePlaylistForm.tsx';
 import s from './PlaylistsPage.module.css';
 import { type ChangeEvent, useState } from 'react';
 import { useGetPlaylistsQuery } from '@/features/playlists';
@@ -37,7 +36,6 @@ export const PlaylistsPage = () => {
   return (
     <div className={s.container}>
       <h1 className={s.title}>Playlists page</h1>
-      <CreatePlaylistForm />
       <input type={'search'} placeholder={'Search playlist'} onChange={(e) => searchPlaylistHandler(e)} />
       <PlaylistsList playlist={data?.data || []} isLoading={isLoading} />
       <Pagination

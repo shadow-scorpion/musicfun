@@ -3,7 +3,6 @@ import { AUTH_STORAGE_KEY } from '@/common/constants';
 import { handleErrors, isTokens } from '@/common/utils';
 import type { BaseQueryFn, FetchArgs, FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 import { Mutex } from 'async-mutex';
-import { authApi } from '@/features/auth';
 
 // Создаём новый мьютекс для управления параллельными запросами на обновление токена
 const mutex = new Mutex();
@@ -40,6 +39,7 @@ export const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, Fetch
           // Повторяем исходный запрос с новым access token
           result = await baseQuery(args, api, extraOptions);
         } else {
+          const { authApi } = await import('@/features/auth');
           // Если обновление токена не удалось — выполняем выход из системы. В целях защиты от подмены токена
           api.dispatch(authApi.endpoints.logout.initiate());
         }

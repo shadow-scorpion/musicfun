@@ -5,7 +5,6 @@ import { Login } from '@/features/auth/ui/Login/Login.tsx';
 import { useGetMeQuery, useLogoutMutation } from '@/features/auth/api/authApi.ts';
 
 const navItems = [
-  { to: PATH.PROFILE, lable: 'Profile' },
   { to: PATH.MAIN, lable: 'Main' },
   { to: PATH.TRACKS, lable: 'Tracks' },
   { to: PATH.PLAYLISTS, lable: 'Playlists' },
@@ -32,7 +31,7 @@ export const Header = () => {
       </nav>
       {me && (
         <div className={s.profile}>
-          <p>{me.login}</p>
+          <NavLink to={PATH.PROFILE}>{me.login}</NavLink>
           <button onClick={logoutHandle}>Logout</button>
         </div>
       )}

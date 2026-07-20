@@ -15,7 +15,6 @@ export const PlaylistItem = ({ playlist, onClickEdit }: Props) => {
   const removePlaylistHandler = (playlistId: string) => {
     if (confirm('Are you sure want to delete playlist?')) {
       removePlaylist(playlistId);
-      console.log('Playlist delete');
     }
   };
 

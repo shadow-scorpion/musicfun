@@ -1,7 +1,5 @@
-export type MeResponse = {
-  userId: string;
-  login: string;
-};
+import { loginResponseSchema, type meResponseSchema } from '@/features/auth/model/authApi.schema.ts';
+import * as z from 'zod';
 
 export type LoginArgs = {
   code: string;
@@ -10,7 +8,5 @@ export type LoginArgs = {
   rememberMe: boolean;
 };
 
-export type LoginResponse = {
-  refreshToken: string;
-  accessToken: string;
-};
+export type MeResponse = z.infer<typeof meResponseSchema>;
+export type LoginResponse = z.infer<typeof loginResponseSchema>;

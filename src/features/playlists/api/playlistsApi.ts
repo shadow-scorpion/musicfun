@@ -1,24 +1,34 @@
 import type {
   PlaylistData,
-  PlaylistsResponse,
   PlaylistInput,
   PlaylistRequestBody,
   FetchPlaylistsArgs,
+  CreatePlaylistArgs,
 } from '@/features/playlists/api/playlistsApi.types.ts';
 import { baseApi } from '@/app/api/baseApi.ts';
 import type { Images } from '@/common/types';
+import {
+  playlistCreateResponseSchema,
+  playlistsResponseSchema,
+} from '@/features/playlists/model/playlists.schemas.ts';
+import { withZodCatch } from '@/common/utils';
+import { imagesSchema } from '@/common/schemas';
 
 export const playlistsApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    getPlaylists: build.query<PlaylistsResponse, FetchPlaylistsArgs>({
-      query: (params) => ({ method: 'get', url: 'playlists', params }),
+    // Because of the Zod schema we don't need to use type PlaylistsResponse in the query, because the schema
+    // will validate the response and throw an error if it doesn't match the expected structure. The same  FetchPlaylistsArgs, but use it in args: params.
+    getPlaylists: build.query({
+      query: (params: FetchPlaylistsArgs) => ({ method: 'get', url: 'playlists', params }),
+      ...withZodCatch(playlistsResponseSchema),
       providesTags: ['Playlists'],
     }),
-    createPlaylist: build.mutation<{ data: PlaylistData }, PlaylistInput>({
+    createPlaylist: build.mutation<PlaylistData, CreatePlaylistArgs>({
       query: (data) => {
         const body = mapPlaylistRequestBody(data);
         return { method: 'post', url: 'playlists', body };
       },
+      ...withZodCatch(playlistCreateResponseSchema),
       invalidatesTags: ['Playlists'],
     }),
     removePlaylist: build.mutation<void, string>({
@@ -28,7 +38,7 @@ export const playlistsApi = baseApi.injectEndpoints({
     updatePlaylist: build.mutation<void, { playlistId: string; data: PlaylistInput }>({
       query: ({ playlistId, data }) => {
         const body = mapPlaylistRequestBody(data);
-        return { method: 'put', url: `playlists/${playlistId + '55'}`, body };
+        return { method: 'put', url: `playlists/${playlistId}`, body };
       },
       onQueryStarted: async ({ playlistId, data }, { dispatch, queryFulfilled, getState }) => {
         const patchCollection: any[] = [];
@@ -67,6 +77,7 @@ export const playlistsApi = baseApi.injectEndpoints({
         formData.append('file', file);
         return { method: 'post', url: `/playlists/${playlistId}/images/main`, body: formData };
       },
+      ...withZodCatch(imagesSchema),
       invalidatesTags: ['Playlists'],
     }),
     deletePlaylistCover: build.mutation<void, string>({

@@ -6,7 +6,12 @@
     width: 100%;
 }
 
-.inputWrap {
+.formItem {
+    display: flex;
+    flex-direction: column;
+}
+
+.field {
     display: flex;
     justify-content: space-between;
     gap: 5px;
@@ -16,4 +21,10 @@
 .button {
     padding: 5px;
     max-width: 80px;
+}
+
+.error {
+    min-height: 15px;
+    color: red;
+    font-size: 12px;
 }

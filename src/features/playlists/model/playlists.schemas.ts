@@ -1,11 +1,13 @@
 import * as z from 'zod';
 import { currentUserReactionSchema, imagesSchema, tagSchema, userSchema } from '@/common/schemas';
 
-export const createPlaylistSchema = z.object({
+export const fieldInputSchema = z.object({
   title: z
     .string()
     .min(1, 'The title length must be more than 1 character')
     .max(100, 'The title length must be less than 100 characters'),
+  description: z.string().max(500, 'The description length must be less than 500 characters').optional(),
+  tagIds: z.array(z.string()).optional(),
 });
 
 export const playlistMetaSchema = z.object({

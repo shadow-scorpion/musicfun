@@ -1,26 +1,26 @@
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { useId } from 'react';
 import s from './CreatePlaylistForm.module.css';
-import { type CreatePlaylistArgs, useCreatePlaylistMutation } from '@/features/playlists';
+import { type FieldInputArgs, useCreatePlaylistMutation } from '@/features/playlists';
 import { Button } from '@/common/components/Button/Button.tsx';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { createPlaylistSchema } from '@/features/playlists/model/playlists.schemas.ts';
+import { fieldInputSchema } from '@/features/playlists/model/playlists.schemas.ts';
 
 export const CreatePlaylistForm = () => {
   const [createPlaylist] = useCreatePlaylistMutation();
   const inputTitleId = useId();
-  const inputDescrptId = useId();
+
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<CreatePlaylistArgs>({
-    resolver: zodResolver(createPlaylistSchema),
+  } = useForm<FieldInputArgs>({
+    resolver: zodResolver(fieldInputSchema),
     mode: 'onSubmit',
   });
 
-  const handleCreatePlaylist: SubmitHandler<CreatePlaylistArgs> = (data) => {
+  const handleCreatePlaylist: SubmitHandler<FieldInputArgs> = (data) => {
     createPlaylist(data)
       .unwrap()
       .then(() => reset());
@@ -36,8 +36,8 @@ export const CreatePlaylistForm = () => {
         {<p className={s.error}>{errors.title ? errors.title.message : ''}</p>}
       </div>
       <div className={s.field}>
-        <label htmlFor={inputDescrptId}>Create description:</label>
-        <input id={inputDescrptId} type={'text'} {...register('description')} />
+        <label htmlFor={inputTitleId}>Create title:</label>
+        <input id={inputTitleId} type={'text'} {...register('description')} />
       </div>
 
       <Button className={s.button} type={'submit'}>

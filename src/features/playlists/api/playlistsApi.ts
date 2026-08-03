@@ -1,9 +1,8 @@
 import type {
-  PlaylistData,
-  PlaylistInput,
   PlaylistRequestBody,
   FetchPlaylistsArgs,
-  CreatePlaylistArgs,
+  FieldInputArgs,
+  CreatePlaylistResponse,
 } from '@/features/playlists/api/playlistsApi.types.ts';
 import { baseApi } from '@/app/api/baseApi.ts';
 import type { Images } from '@/common/types';
@@ -23,7 +22,7 @@ export const playlistsApi = baseApi.injectEndpoints({
       ...withZodCatch(playlistsResponseSchema),
       providesTags: ['Playlists'],
     }),
-    createPlaylist: build.mutation<PlaylistData, CreatePlaylistArgs>({
+    createPlaylist: build.mutation<CreatePlaylistResponse, FieldInputArgs>({
       query: (data) => {
         const body = mapPlaylistRequestBody(data);
         return { method: 'post', url: 'playlists', body };
@@ -35,7 +34,7 @@ export const playlistsApi = baseApi.injectEndpoints({
       query: (playlistId) => ({ method: 'delete', url: `playlists/${playlistId}` }),
       invalidatesTags: ['Playlists'],
     }),
-    updatePlaylist: build.mutation<void, { playlistId: string; data: PlaylistInput }>({
+    updatePlaylist: build.mutation<void, { playlistId: string; data: FieldInputArgs }>({
       query: ({ playlistId, data }) => {
         const body = mapPlaylistRequestBody(data);
         return { method: 'put', url: `playlists/${playlistId}`, body };
@@ -96,7 +95,7 @@ export const {
   useDeletePlaylistCoverMutation,
 } = playlistsApi;
 
-const mapPlaylistRequestBody = (data: PlaylistInput): PlaylistRequestBody => {
+const mapPlaylistRequestBody = (data: FieldInputArgs): PlaylistRequestBody => {
   return {
     data: {
       type: 'playlists',

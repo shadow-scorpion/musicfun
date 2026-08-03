@@ -1,6 +1,6 @@
 import {
-  createPlaylistSchema,
-  playlistAttributesSchema,
+  fieldInputSchema,
+  playlistAttributesSchema, playlistCreateResponseSchema,
   playlistDataSchema,
   playlistMetaSchema,
   playlistsResponseSchema,
@@ -24,14 +24,16 @@ export type FetchPlaylistsArgs = {
   trackId?: string;
 };
 
-export type CreatePlaylistArgs = z.infer<typeof createPlaylistSchema>;
+export type CreatePlaylistResponse = z.infer<typeof playlistCreateResponseSchema>
+
+export type FieldInputArgs = z.infer<typeof fieldInputSchema>;
 
 export type PlaylistRequestBody = {
   data: {
     type: string;
     attributes: {
       title: string;
-      description: string;
+      description?: string;
       tagIds?: string[];
     };
   };

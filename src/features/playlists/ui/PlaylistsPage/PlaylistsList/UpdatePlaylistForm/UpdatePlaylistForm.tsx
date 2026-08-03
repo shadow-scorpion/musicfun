@@ -1,5 +1,5 @@
 import { type SubmitHandler, type UseFormHandleSubmit, type UseFormRegister } from 'react-hook-form';
-import { type PlaylistInput, useUpdatePlaylistMutation } from '@/features/playlists';
+import { type FieldInputArgs, useUpdatePlaylistMutation } from '@/features/playlists';
 import { useId } from 'react';
 import s from './UpdatePlaylistForm.module.css';
 import { Button } from '@/common/components/Button/Button.tsx';
@@ -7,8 +7,8 @@ import { Button } from '@/common/components/Button/Button.tsx';
 type Props = {
   playlistId: string | null;
   setPlaylistId: (playlistId: string | null) => void;
-  register: UseFormRegister<PlaylistInput>;
-  handleSubmit: UseFormHandleSubmit<PlaylistInput>;
+  register: UseFormRegister<FieldInputArgs>;
+  handleSubmit: UseFormHandleSubmit<FieldInputArgs>;
   onClickCancelEdit: (playlist: null) => void;
 };
 
@@ -21,9 +21,9 @@ export const UpdatePlaylistForm = ({
 }: Props) => {
   const [updatePlaylist] = useUpdatePlaylistMutation();
   const inputTitleId = useId();
-  const inputDescrptId = useId();
+  const inputDescriptionId = useId();
 
-  const onSubmit: SubmitHandler<PlaylistInput> = (data) => {
+  const onSubmit: SubmitHandler<FieldInputArgs> = (data) => {
     if (!playlistId) return;
     setPlaylistId(null);
     updatePlaylist({ playlistId: playlistId, data })
@@ -39,8 +39,8 @@ export const UpdatePlaylistForm = ({
           <input id={inputTitleId} type={'text'} {...register('title')} />
         </div>
         <div className={s.inputWrap}>
-          <label htmlFor={inputDescrptId}>Update description:</label>
-          <input id={inputDescrptId} type={'text'} {...register('description')} />
+          <label htmlFor={inputDescriptionId}>Description title:</label>
+          <input id={inputDescriptionId} type={'text'} {...register('description')} />
         </div>
 
         <Button className={s.button} type={'submit'}>

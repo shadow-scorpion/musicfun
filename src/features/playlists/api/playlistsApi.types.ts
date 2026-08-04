@@ -1,6 +1,7 @@
 import {
   fieldInputSchema,
-  playlistAttributesSchema, playlistCreateResponseSchema,
+  playlistAttributesSchema,
+  playlistCreateResponseSchema,
   playlistDataSchema,
   playlistMetaSchema,
   playlistsResponseSchema,
@@ -24,7 +25,7 @@ export type FetchPlaylistsArgs = {
   trackId?: string;
 };
 
-export type CreatePlaylistResponse = z.infer<typeof playlistCreateResponseSchema>
+export type CreatePlaylistResponse = z.infer<typeof playlistCreateResponseSchema>;
 
 export type FieldInputArgs = z.infer<typeof fieldInputSchema>;
 
@@ -38,8 +39,6 @@ export type PlaylistRequestBody = {
     };
   };
 };
-
-export type PlaylistInput = PlaylistRequestBody['data']['attributes'];
 
 // Params for uploading a playlist cover image
 export type UploadPlaylistCoverArgs = {

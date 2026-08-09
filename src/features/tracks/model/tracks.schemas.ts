@@ -1,6 +1,5 @@
 import * as z from 'zod';
-import { CurrentUserReaction } from '@/common/enums';
-import { imagesSchema, userSchema } from '@/common/schemas';
+import { currentUserReactionSchema, imagesSchema, userSchema } from '@/common/schemas';
 
 export const tracksIncludedSchema = z.object({
   id: z.string(),
@@ -34,7 +33,7 @@ export const trackAttributesSchema = z.object({
   addedAt: z.iso.datetime(),
   attachments: z.array(trackAttachmentSchema),
   images: imagesSchema,
-  currentUserReaction: CurrentUserReaction,
+  currentUserReaction: currentUserReactionSchema,
   user: userSchema,
   isPublished: z.boolean(),
   publishedAt: z.iso.datetime(),

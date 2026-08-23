@@ -1,1 +1,1 @@
-export { AUTH_STORAGE_KEY } from './constants';
+export { AUTH_STORAGE_KEY, SOCKET_EVENTS, type SocketEvent } from './constants';

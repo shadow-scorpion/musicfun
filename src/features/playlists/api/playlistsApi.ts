@@ -3,6 +3,7 @@ import type {
   FetchPlaylistsArgs,
   FieldInputArgs,
   CreatePlaylistResponse,
+  PlaylistEvent,
 } from '@/features/playlists/api/playlistsApi.types.ts';
 import { baseApi } from '@/app/api/baseApi.ts';
 import type { Images } from '@/common/types';
@@ -12,14 +13,49 @@ import {
 } from '@/features/playlists/model/playlists.schemas.ts';
 import { withZodCatch } from '@/common/utils';
 import { imagesSchema } from '@/common/schemas';
+import { SOCKET_EVENTS } from '@/common/constants';
+import { subscribeToEvent } from '@/common/socket';
 
 export const playlistsApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     // Because of the Zod schema we don't need to use type PlaylistsResponse in the query, because the schema
     // will validate the response and throw an error if it doesn't match the expected structure. The same  FetchPlaylistsArgs, but use it in args: params.
     getPlaylists: build.query({
-      query: (params: FetchPlaylistsArgs) => ({ method: 'get', url: 'playlists', params }),
+      query: (params: FetchPlaylistsArgs) => {
+        return { method: 'get', url: 'playlists', params };
+      },
       ...withZodCatch(playlistsResponseSchema),
+      keepUnusedDataFor: 0,
+      onCacheEntryAdded: async (_args, { cacheDataLoaded, cacheEntryRemoved, updateCachedData }) => {
+        await cacheDataLoaded;
+
+        const unsubscribes = [
+          subscribeToEvent<PlaylistEvent>(SOCKET_EVENTS.PLAYLIST_CREATED, (msg: PlaylistEvent) => {
+            const newPlaylist = msg.payload.data;
+            updateCachedData((draft) => {
+              draft.data.pop();
+              draft.data.unshift(newPlaylist);
+              draft.meta.totalCount = draft.meta.totalCount + 1;
+              draft.meta.pagesCount = Math.ceil(draft.meta.totalCount / draft.meta.pageSize);
+            });
+          }),
+          subscribeToEvent<PlaylistEvent>(SOCKET_EVENTS.PLAYLIST_UPDATED, (msg: PlaylistEvent) => {
+            const updatedPlaylist = msg.payload.data;
+            updateCachedData((draft) => {
+              const index = draft.data.findIndex((p) => p.id === updatedPlaylist.id);
+              console.log(index);
+              if (index !== -1) {
+                draft.data[index].attributes.title = updatedPlaylist.attributes.title;
+              }
+            });
+          }),
+        ];
+
+        await cacheEntryRemoved;
+
+        unsubscribes.forEach((unsubscribe) => unsubscribe());
+        // unsubscribe.disconnect();
+      },
       providesTags: ['Playlists'],
     }),
     createPlaylist: build.mutation<CreatePlaylistResponse, FieldInputArgs>({

@@ -1,0 +1,20 @@
+import { io, Socket } from 'socket.io-client';
+
+let socket: Socket | null;
+
+export const getSocket = () => {
+  if (!socket) {
+    socket = io(import.meta.env.VITE_SOCKET_URL, {
+      path: '/api/1.0/ws',
+      transports: ['websocket'],
+    });
+
+    socket.on('connect', () => {
+      console.log('Connected to socket server');
+    });
+    socket.on('disconnect', () => {
+      console.log('Disconnected from socket server');
+    });
+  }
+  return socket;
+};

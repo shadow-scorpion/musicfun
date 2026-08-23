@@ -45,3 +45,12 @@ export type UploadPlaylistCoverArgs = {
   playlistId: string;
   file: File;
 };
+
+// Websockts events
+
+export type PlaylistEvent = {
+  type: 'tracks.playlist-created' | 'tracks.playlist-updated';
+  payload: {
+    data: PlaylistData;
+  };
+};

@@ -1,0 +1,20 @@
+.gradeWrap {
+    display: flex;
+    gap: 8px;
+}
+
+.like {
+    color: var(--accent-color);
+}
+
+.like:hover {
+    color: var(--accent-color-hover);
+}
+
+.dislike {
+    color: var(--accent-color);
+}
+
+.dislike:hover {
+    color: var(--accent-color-hover);
+}

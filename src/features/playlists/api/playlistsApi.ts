@@ -125,6 +125,12 @@ export const playlistsApi = baseApi.injectEndpoints({
       },
       invalidatesTags: ['Playlists'],
     }),
+    dislikePlaylist: build.mutation<void, { playlistId: string }>({
+      query: ({ playlistId }) => {
+        return { method: 'post', url: `/playlists/${playlistId}/dislikes` };
+      },
+      invalidatesTags: ['Playlists'],
+    }),
   }),
 });
 
@@ -136,6 +142,7 @@ export const {
   useUploadPlaylistCoverMutation,
   useDeletePlaylistCoverMutation,
   useLikePlaylistMutation,
+  useDislikePlaylistMutation,
 } = playlistsApi;
 
 const mapPlaylistRequestBody = (data: FieldInputArgs): PlaylistRequestBody => {

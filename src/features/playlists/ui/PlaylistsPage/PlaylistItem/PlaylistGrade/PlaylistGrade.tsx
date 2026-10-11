@@ -3,6 +3,7 @@ import s from './PlaylistGrade.module.css';
 import {
   useDislikePlaylistMutation,
   useLikePlaylistMutation,
+  useRemoveUserReactionMutation,
 } from '@/features/playlists/api/playlistsApi.ts';
 import type { PlaylistData } from '@/features/playlists';
 
@@ -13,17 +14,26 @@ type Props = {
 export const PlaylistGrade = ({ playlist }: Props) => {
   const [likePlaylist] = useLikePlaylistMutation();
   const [dislikePlaylist] = useDislikePlaylistMutation();
+  const [removeUserReaction] = useRemoveUserReactionMutation();
 
   return (
     <div className={s.gradeWrap}>
       <ImHeart
         className={playlist.attributes.likesCount ? s.like : ''}
-        onClick={() => likePlaylist({ playlistId: playlist.id })}
+        onClick={
+          playlist.attributes.likesCount
+            ? () => removeUserReaction({ playlistId: playlist.id })
+            : () => likePlaylist({ playlistId: playlist.id })
+        }
         cursor="pointer"
       />
       <ImHeartBroken
         className={playlist.attributes.dislikesCount ? s.dislike : ''}
-        onClick={() => dislikePlaylist({ playlistId: playlist.id })}
+        onClick={
+          playlist.attributes.dislikesCount
+            ? () => removeUserReaction({ playlistId: playlist.id })
+            : () => dislikePlaylist({ playlistId: playlist.id })
+        }
         cursor="pointer"
       />
     </div>

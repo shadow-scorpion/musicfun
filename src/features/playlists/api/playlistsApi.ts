@@ -4,6 +4,7 @@ import type {
   FieldInputArgs,
   CreatePlaylistResponse,
   PlaylistEvent,
+  PlaylistReactionEvent,
 } from '@/features/playlists/api/playlistsApi.types.ts';
 import { baseApi } from '@/app/api/baseApi.ts';
 import type { Images } from '@/common/types';
@@ -128,6 +129,12 @@ export const playlistsApi = baseApi.injectEndpoints({
     dislikePlaylist: build.mutation<void, { playlistId: string }>({
       query: ({ playlistId }) => {
         return { method: 'post', url: `/playlists/${playlistId}/dislikes` };
+      },
+      invalidatesTags: ['Playlists'],
+    }),
+    removeUserReaction: build.mutation<PlaylistReactionEvent, { playlistId: string }>({
+      query: ({ playlistId }) => {
+        return { method: 'delete', url: `/playlists/${playlistId}/reactions` };
       },
       invalidatesTags: ['Playlists'],
     }),

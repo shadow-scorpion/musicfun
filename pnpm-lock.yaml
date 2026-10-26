@@ -26,6 +26,9 @@ importers:
       react-hook-form:
         specifier: ^7.72.0
         version: 7.72.0(react@19.2.4)
+      react-icons:
+        specifier: ^5.7.0
+        version: 5.7.0(react@19.2.4)
       react-loading-skeleton:
         specifier: ^3.5.0
         version: 3.5.0(react@19.2.4)
@@ -1011,6 +1014,11 @@ packages:
     engines: {node: '>=18.0.0'}
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18 || ^19
+
+  react-icons@5.7.0:
+    resolution: {integrity: sha512-LBLy340Rzqy6+/yVhZKT3B/QpP1BZaesGqasf09HPOBzRarcDIFH0WwXlXQfE7q7ipxK4MSiC5DIBWURCny6fw==}
+    peerDependencies:
+      react: '*'
 
   react-loading-skeleton@3.5.0:
     resolution: {integrity: sha512-gxxSyLbrEAdXTKgfbpBEFZCO/P153DnqSCQau2+o6lNy1jgMRr2MmRmOzMmyrwSaSYLRB8g7b0waYPmUjz7IhQ==}
@@ -2107,6 +2115,10 @@ snapshots:
       scheduler: 0.27.0
 
   react-hook-form@7.72.0(react@19.2.4):
+    dependencies:
+      react: 19.2.4
+
+  react-icons@5.7.0(react@19.2.4):
     dependencies:
       react: 19.2.4
 

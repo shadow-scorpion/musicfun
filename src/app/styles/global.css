@@ -1,0 +1,41 @@
+:root {
+    /* Цвета */
+    --bg-primary: #0f0f0f;
+    --bg-secondary: #212121;
+    --text-primary: #ffffff;
+    --text-secondary: #aaaaaa;
+    --accent-color: #f30baa;
+    --accent-color-hover: #ed2fb1;
+
+    --bg-main: linear-gradient(#1a1ab1 25%, black 70%);
+    --bg-input: #494848;
+
+    /* Размеры контейнера */
+    --header-height: 56px;
+    --sidebar-width: 240px;
+
+    /*Размеры шрифта*/
+    --font-size-xs: 12px; /* Подписи, мелкии мета-данные */
+    --font-size-sm: 14px; /* Текст в плейлистах, длительность, артисты */
+    --font-size-md: 16px; /* Базовый текст, ссылки в меню, инпуты */
+    --font-size-lg: 20px; /* Подзаголовки карточек */
+    --font-size-xl: 24px; /* Заголовки страниц */
+}
+
+body {
+    color: var(--text-secondary);
+    font-family: sans-serif, Arial, sans-serif;
+}
+
+.container {
+    padding: 25px;
+}
+
+h1 {
+    text-align: left;
+    font-size: 25px;
+    font-weight: 500;
+}
+
+
+

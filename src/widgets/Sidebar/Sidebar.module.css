@@ -1,0 +1,26 @@
+.sidebar {
+    width: 250px;
+    padding: 0 16px;
+    background-color: var(--bg-primary);
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.listItem {
+    display: flex;
+    /*align-items: center;*/
+    gap: 10px;
+}
+
+.link {
+    display: flex;
+    gap: 10px;
+}
+
+.activeLink {
+    color: var(--text-primary);
+}

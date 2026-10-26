@@ -12,8 +12,11 @@ export function App() {
     <>
       <Header />
       {isGlobalLoading && <LinearProgress />}
-      <div className={s.layout}>
-        <Routing />
+      <div className={s.mainLayout}>
+        <Sidebar />
+        <div className={`container ${s.mainContent}`}>
+          <Routing />
+        </div>
       </div>
       <ToastContainer position={'bottom-left'} theme={'colored'} />
     </>

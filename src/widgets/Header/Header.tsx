@@ -1,14 +1,9 @@
 import { PATH } from '@/common/config';
-import { NavLink } from 'react-router';
 import s from './Header.module.css';
 import { Login } from '@/features/auth/ui/Login/Login.tsx';
 import { useGetMeQuery, useLogoutMutation } from '@/features/auth/api/authApi.ts';
-
-const navItems = [
-  { to: PATH.MAIN, lable: 'Main' },
-  { to: PATH.TRACKS, lable: 'Tracks' },
-  { to: PATH.PLAYLISTS, lable: 'Playlists' },
-];
+import { NavLink } from 'react-router';
+import { Button } from '@/common/components';
 
 export const Header = () => {
   const { data: me } = useGetMeQuery();
@@ -17,18 +12,7 @@ export const Header = () => {
   const logoutHandle = () => logout();
 
   return (
-    <header className={s.container}>
-      <nav>
-        <ul className={s.list}>
-          {navItems.map((item) => (
-            <li key={item.to}>
-              <NavLink to={item.to} className={({ isActive }) => (isActive ? s.activeLink : '')}>
-                {item.lable}
-              </NavLink>
-            </li>
-          ))}
-        </ul>
-      </nav>
+    <header className={s.header}>
       {me && (
         <div className={s.profile}>
           <NavLink to={PATH.PROFILE}>{me.login}</NavLink>

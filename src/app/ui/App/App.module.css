@@ -1,4 +1,21 @@
-.layout {
-    max-width: 1100px;
-    margin: 0 auto 200px
+.appLayout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh
 }
+
+.mainLayout {
+    display: flex;
+    flex-grow: 1;
+    text-align: center;
+}
+
+.mainContent {
+    width: 100%;
+    background-image: var(--bg-main);
+}
+
+/*.content {*/
+/*    max-width: 1100px;*/
+/*    margin: 0 auto 200px*/
+/*}*/

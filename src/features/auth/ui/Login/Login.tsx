@@ -1,5 +1,7 @@
 import { useLoginMutation } from '@/features/auth/api/authApi.ts';
 import { PATH } from '@/common/config';
+import { Button } from '@/common/components';
+import s from './Login.module.css';
 
 export const Login = () => {
   const [login] = useLoginMutation();
@@ -24,8 +26,8 @@ export const Login = () => {
   };
 
   return (
-    <button type={'button'} onClick={loginHandle}>
-      login
-    </button>
+    <Button type={'button'} onClick={loginHandle} className={`${s.button}`}>
+      Sign up with APIHUB
+    </Button>
   );
 };

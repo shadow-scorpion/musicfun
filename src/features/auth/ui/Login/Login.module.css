@@ -1,0 +1,11 @@
+.button {
+    padding: 10px 30px;
+    border: none;
+    border-radius: 20px;
+    color: var(--text-primary);
+    background-color: var(--accent-color);
+}
+
+.button:hover {
+    background-color: var(--accent-color-hover);
+}

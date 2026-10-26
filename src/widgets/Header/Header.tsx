@@ -16,7 +16,7 @@ export const Header = () => {
       {me && (
         <div className={s.profile}>
           <NavLink to={PATH.PROFILE}>{me.login}</NavLink>
-          <button onClick={logoutHandle}>Logout</button>
+          <Button onClick={logoutHandle}>Logout</Button>
         </div>
       )}
       {!me && <Login />}

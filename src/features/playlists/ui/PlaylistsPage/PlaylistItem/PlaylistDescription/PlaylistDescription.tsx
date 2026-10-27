@@ -1,4 +1,5 @@
 import type { PlaylistAttributes } from '@/features/playlists';
+import s from './PlaylistDescription.module.css';
 
 type Props = {
   attributes: PlaylistAttributes;
@@ -6,10 +7,9 @@ type Props = {
 
 export const PlaylistDescription = ({ attributes }: Props) => {
   return (
-    <div>
-      <div>title: {attributes.title}</div>
-      <div>description: {attributes.description}</div>
-      <div>userName: {attributes.user.name}</div>
+    <div className={s.descriptionWrapp}>
+      <p>Author: {attributes.user.name}</p>
+      <p>Playlist name: {attributes.title}</p>
     </div>
   );
 };

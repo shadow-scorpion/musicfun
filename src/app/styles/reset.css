@@ -23,6 +23,6 @@ input, button, textarea, select {
 
 /* 5. Убираем подчеркивание у ссылок по умолчанию */
 a {
+    color: var(--text-secondary);
     text-decoration: none;
-    color: inherit;
 }

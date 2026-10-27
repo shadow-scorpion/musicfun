@@ -1,0 +1,30 @@
+.playlistItem {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-content: space-between;
+}
+
+.buttonGradeWrap {
+    display: flex;
+    justify-content: space-between;
+    /*gap: 3px;*/
+}
+
+.buttonWrap {
+    display: flex;
+    gap: 3px;
+}
+
+.button {
+    border: none;
+    line-height: 1;
+    padding: 2px;
+    background-color: var(--accent-color);
+    color: white;
+}
+
+.button:hover {
+    background-color: var(--accent-color-hover);
+}
+

@@ -1,10 +1,14 @@
 import { useGetMeQuery } from '@/features/auth/api/authApi.ts';
 
 export const MainPage = () => {
-  const { data: meData } = useGetMeQuery();
+  const { data: meData, isError } = useGetMeQuery();
+
   return (
     <div>
-      <h1>Your login: {meData?.login}</h1>
+      <div>
+        <h1>Your login: {!isError ? meData?.login : 'User not found'}</h1>
+      </div>
+      <div></div>
     </div>
   );
 };

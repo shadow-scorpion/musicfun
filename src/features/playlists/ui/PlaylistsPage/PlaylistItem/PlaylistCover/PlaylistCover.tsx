@@ -2,8 +2,12 @@ import defaultCover from '@/assets/images/default-playlist-cover.png';
 import s from './PlaylistCover.module.css';
 import type { Images } from '@/common/types';
 import type { ChangeEvent } from 'react';
-import { useDeletePlaylistCoverMutation, useUploadPlaylistCoverMutation } from '@/features/playlists/api/playlistsApi.ts';
+import {
+  useDeletePlaylistCoverMutation,
+  useUploadPlaylistCoverMutation,
+} from '@/features/playlists/api/playlistsApi.ts';
 import { toast } from 'react-toastify';
+import { Button } from '@/common/components';
 
 type Props = {
   images: Images;
@@ -37,10 +41,25 @@ export const PlaylistCover = ({ images, playlistId }: Props) => {
   const deleteCoverHandler = () => deletePlaylistCover(playlistId);
 
   return (
-    <div>
+    <div className={s.coverWrapper}>
       <img src={src} className={s.cover} alt={'cover'} width={250} />
-      <input type="file" src={defaultCover} onChange={uploadCoverHandler} accept={'image/jpeg,image/png,image/gif'} />
-      {originalCover && <button onClick={deleteCoverHandler}>Delete</button>}
+      <div className={s.inputWrapper}>
+        <label className={s.inputLabel}>
+          <input
+            type="file"
+            src={defaultCover}
+            className={s.input}
+            onChange={uploadCoverHandler}
+            accept={'image/jpeg,image/png,image/gif'}
+          />
+          <span>Upload cover</span>
+        </label>
+        {originalCover && (
+          <Button onClick={deleteCoverHandler} className={s.deleteButton}>
+            Delete cover
+          </Button>
+        )}
+      </div>
     </div>
   );
 };

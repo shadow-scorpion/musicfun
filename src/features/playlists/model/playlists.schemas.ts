@@ -45,3 +45,10 @@ export const playlistsResponseSchema = z.object({
   data: z.array(playlistDataSchema),
   meta: playlistMetaSchema,
 });
+
+export const playlistLikeReaction = z.object({
+  dislikes: z.number(),
+  likes: z.number(),
+  objectId: z.string(),
+  value: z.number(),
+});

@@ -4,12 +4,13 @@ import type {
   FieldInputArgs,
   CreatePlaylistResponse,
   PlaylistEvent,
-  PlaylistReactionEvent,
+  PlaylistLikeReaction,
 } from '@/features/playlists/api/playlistsApi.types.ts';
 import { baseApi } from '@/app/api/baseApi.ts';
 import type { Images } from '@/common/types';
 import {
   playlistCreateResponseSchema,
+  playlistLikeReaction,
   playlistsResponseSchema,
 } from '@/features/playlists/model/playlists.schemas.ts';
 import { withZodCatch } from '@/common/utils';
@@ -44,7 +45,6 @@ export const playlistsApi = baseApi.injectEndpoints({
             const updatedPlaylist = msg.payload.data;
             updateCachedData((draft) => {
               const index = draft.data.findIndex((p) => p.id === updatedPlaylist.id);
-              console.log(index);
               if (index !== -1) {
                 draft.data[index].attributes.title = updatedPlaylist.attributes.title;
               }
@@ -120,22 +120,25 @@ export const playlistsApi = baseApi.injectEndpoints({
       query: (playlistId) => ({ method: 'delete', url: `/playlists/${playlistId}/images/main` }),
       invalidatesTags: ['Playlists'],
     }),
-    likePlaylist: build.mutation<void, { playlistId: string }>({
+    likePlaylist: build.mutation<PlaylistLikeReaction, { playlistId: string }>({
       query: ({ playlistId }) => {
         return { method: 'post', url: `/playlists/${playlistId}/likes` };
       },
+      ...withZodCatch(playlistLikeReaction),
       invalidatesTags: ['Playlists'],
     }),
-    dislikePlaylist: build.mutation<void, { playlistId: string }>({
+    dislikePlaylist: build.mutation<PlaylistLikeReaction, { playlistId: string }>({
       query: ({ playlistId }) => {
         return { method: 'post', url: `/playlists/${playlistId}/dislikes` };
       },
+      ...withZodCatch(playlistLikeReaction),
       invalidatesTags: ['Playlists'],
     }),
-    removeUserReaction: build.mutation<PlaylistReactionEvent, { playlistId: string }>({
+    removeUserReaction: build.mutation<PlaylistLikeReaction, { playlistId: string }>({
       query: ({ playlistId }) => {
         return { method: 'delete', url: `/playlists/${playlistId}/reactions` };
       },
+      ...withZodCatch(playlistLikeReaction),
       invalidatesTags: ['Playlists'],
     }),
   }),
@@ -150,6 +153,7 @@ export const {
   useDeletePlaylistCoverMutation,
   useLikePlaylistMutation,
   useDislikePlaylistMutation,
+  useRemoveUserReactionMutation,
 } = playlistsApi;
 
 const mapPlaylistRequestBody = (data: FieldInputArgs): PlaylistRequestBody => {

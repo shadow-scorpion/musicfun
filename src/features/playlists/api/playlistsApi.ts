@@ -86,10 +86,10 @@ export const playlistsApi = baseApi.injectEndpoints({
                 'getPlaylists',
                 { search: arg.search, pageNumber: arg.pageNumber, pageSize: arg.pageSize },
                 (draft) => {
-                  const playlist = draft.data.findIndex((p) => p.id === playlistId);
-                  if (playlist !== -1) {
-                    draft.data[playlist].attributes = {
-                      ...draft.data[playlist].attributes,
+                  const playlistIndex = draft.data.findIndex((p) => p.id === playlistId);
+                  if (playlistIndex !== -1) {
+                    draft.data[playlistIndex].attributes = {
+                      ...draft.data[playlistIndex].attributes,
                       ...data,
                     };
                   }
@@ -125,6 +125,35 @@ export const playlistsApi = baseApi.injectEndpoints({
         return { method: 'post', url: `/playlists/${playlistId}/likes` };
       },
       ...withZodCatch(playlistLikeReaction),
+      onQueryStarted: async ({ playlistId }, { dispatch, queryFulfilled, getState }) => {
+        const patchCollection: any[] = [];
+        const args = playlistsApi.util.selectCachedArgsForQuery(getState(), 'getPlaylists');
+        args.forEach((arg) => {
+          patchCollection.push(
+            dispatch(
+              playlistsApi.util.updateQueryData(
+                'getPlaylists',
+                { search: arg.search, pageNumber: arg.pageNumber, pageSize: arg.pageSize },
+                (draft) => {
+                  const playlistIndex = draft.data.findIndex((p) => p.id === playlistId);
+                  if (playlistIndex !== -1) {
+                    draft.data[playlistIndex].attributes = {
+                      ...draft.data[playlistIndex].attributes,
+                      likesCount: draft.data[playlistIndex].attributes.likesCount + 1,
+                    };
+                  }
+                },
+              ),
+            ),
+          );
+        });
+
+        try {
+          await queryFulfilled;
+        } catch (e) {
+          patchCollection.forEach((patch) => patch.undo());
+        }
+      },
       invalidatesTags: ['Playlists'],
     }),
     dislikePlaylist: build.mutation<PlaylistLikeReaction, { playlistId: string }>({
@@ -132,6 +161,36 @@ export const playlistsApi = baseApi.injectEndpoints({
         return { method: 'post', url: `/playlists/${playlistId}/dislikes` };
       },
       ...withZodCatch(playlistLikeReaction),
+      onQueryStarted: async ({ playlistId }, { dispatch, queryFulfilled, getState }) => {
+        const patchCollection: any[] = [];
+        const args = playlistsApi.util.selectCachedArgsForQuery(getState(), 'getPlaylists');
+        args.forEach((arg) => {
+          patchCollection.push(
+            dispatch(
+              playlistsApi.util.updateQueryData(
+                'getPlaylists',
+                { search: arg.search, pageNumber: arg.pageNumber, pageSize: arg.pageSize },
+                (draft) => {
+                  const playlistIndex = draft.data.findIndex((p) => p.id === playlistId);
+                  if (playlistIndex !== -1) {
+                    draft.data[playlistIndex].attributes = {
+                      ...draft.data[playlistIndex].attributes,
+                      likesCount: draft.data[playlistIndex].attributes.likesCount - 1,
+                      dislikesCount: draft.data[playlistIndex].attributes.dislikesCount + 1,
+                    };
+                  }
+                },
+              ),
+            ),
+          );
+        });
+
+        try {
+          await queryFulfilled;
+        } catch (e) {
+          patchCollection.forEach((patch) => patch.undo());
+        }
+      },
       invalidatesTags: ['Playlists'],
     }),
     removeUserReaction: build.mutation<PlaylistLikeReaction, { playlistId: string }>({
@@ -139,6 +198,36 @@ export const playlistsApi = baseApi.injectEndpoints({
         return { method: 'delete', url: `/playlists/${playlistId}/reactions` };
       },
       ...withZodCatch(playlistLikeReaction),
+      // onQueryStarted: async ({ playlistId }, { dispatch, queryFulfilled, getState }) => {
+      //   const patchCollection: any[] = [];
+      //   const args = playlistsApi.util.selectCachedArgsForQuery(getState(), 'getPlaylists');
+      //   args.forEach((arg) => {
+      //     patchCollection.push(
+      //       dispatch(
+      //         playlistsApi.util.updateQueryData(
+      //           'getPlaylists',
+      //           { search: arg.search, pageNumber: arg.pageNumber, pageSize: arg.pageSize },
+      //           (draft) => {
+      //             const playlistIndex = draft.data.findIndex((p) => p.id === playlistId);
+      //             if (playlistIndex !== -1) {
+      //               draft.data[playlistIndex].attributes = {
+      //                 ...draft.data[playlistIndex].attributes,
+      //                 likesCount: draft.data[playlistIndex].attributes.likesCount - 1,
+      //                 dislikesCount: draft.data[playlistIndex].attributes.dislikesCount - 1,
+      //               };
+      //             }
+      //           },
+      //         ),
+      //       ),
+      //     );
+      //   });
+      //
+      //   try {
+      //     await queryFulfilled;
+      //   } catch (e) {
+      //     patchCollection.forEach((patch) => patch.undo());
+      //   }
+      // },
       invalidatesTags: ['Playlists'],
     }),
   }),

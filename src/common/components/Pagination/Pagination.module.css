@@ -1,12 +1,11 @@
 .container {
     display: flex;
     flex-direction: row;
-    justify-content: center;
     align-items: center;
     gap: 20px;
 }
 
-.select {
+.selectWrapper {
     display: flex;
     flex-direction: row;
     gap: 8px;
@@ -20,14 +19,15 @@
 
 .pageButton {
     padding: 4px 10px;
-    background: white;
-    border: 1px solid #aaa;
+    background: var(--bg-pagination);
+    color: var(--text-primary);
+    border: none;
     border-radius: 4px;
     cursor: pointer;
 }
 
 .pageButtonActive {
-    background: #ececec;
+    background: var(--accent-color);
     cursor: default;
 }
 
@@ -35,4 +35,24 @@
     padding: 4px 10px;
     color: #888;
     user-select: none;
+}
+
+.select {
+    padding: 3px;
+    border: none;
+    border-radius: 3px;
+    background-color: var(--bg-pagination);
+    color: white;
+}
+
+.option {
+
+}
+
+.option:hover {
+    background-color: var(--accent-color);
+}
+
+.option:active {
+    background-color: var(--accent-color);
 }

@@ -1,6 +1,7 @@
 import defaultTrack from '@/assets/images/default-track-cover.jpg';
 import type { TrackAttributes } from '@/features/tracks/api/tracksApi.types.ts';
 import s from '@/features/tracks/ui/TracksPage/TracksList/TrackItem/TrackItem.module.css';
+import { standardLocalDate } from '@/common/utils/standardLocalDate.ts';
 
 type Props = {
   attributes: TrackAttributes;
@@ -10,6 +11,8 @@ type Props = {
 export const TrackItem = ({ attributes, orderTrack }: Props) => {
   const { title, images, user, attachments, addedAt } = attributes;
   const originalCover = images.main.find((image) => image.type === 'original')?.url || defaultTrack;
+
+  const formattedDate = standardLocalDate(addedAt, 'ru-RU');
 
   return (
     <div className={s.track}>
@@ -24,6 +27,7 @@ export const TrackItem = ({ attributes, orderTrack }: Props) => {
         </div>
       </div>
       {attachments.length ? <audio controls src={attachments[0].url} /> : 'no file'}
+      <div>{formattedDate}</div>
     </div>
   );
 };

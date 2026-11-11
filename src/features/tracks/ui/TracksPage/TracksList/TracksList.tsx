@@ -1,6 +1,7 @@
 import s from '@/features/tracks/ui/TracksPage/TracksList/TracksList.module.css';
 import { LoadingTrigger } from '@/features/tracks/ui/TracksPage/TracksList/LoadingTrigger/LoadingTrigger.tsx';
 import { useFetchTracksInfiniteQuery } from '@/features/tracks/api/tracksApi.ts';
+import { TrackItem } from '@/features/tracks/ui/TracksPage/TracksList/TrackItem/TrackItem.tsx';
 
 export const TracksList = () => {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useFetchTracksInfiniteQuery();
@@ -10,18 +11,8 @@ export const TracksList = () => {
   return (
     <>
       <div className={s.list}>
-        {pages.map((track) => {
-          const { title, user, attachments } = track.attributes;
-
-          return (
-            <div key={track.id} className={s.item}>
-              <div>
-                <p>Title: {title}</p>
-                <p>Name: {user.name}</p>
-              </div>
-              {attachments.length ? <audio controls src={attachments[0].url} /> : 'no file'}
-            </div>
-          );
+        {pages.map((track, index) => {
+          return <TrackItem attributes={track.attributes} key={track.id} orderTrack={index + 1} />;
         })}
       </div>
       {hasNextPage && (
